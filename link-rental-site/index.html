@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>LINK RENTAL | Houses, apartments and cars in Dar es Salaam</title>
+<meta name="description" content="Browse houses, apartments, short stays and cars for rent in Dar es Salaam, then message LINK RENTAL on WhatsApp to arrange a viewing.">
+<meta name="theme-color" content="#14243A">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LINK RENTAL">
+<meta property="og:title" content="LINK RENTAL | Houses, apartments and cars in Dar es Salaam">
+<meta property="og:description" content="Browse houses, apartments, short stays and cars for rent in Dar es Salaam, then message LINK RENTAL on WhatsApp to arrange a viewing.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&h=630&q=70">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2712%27 fill=%27%2314243A%27/%3E%3Ctext x=%2732%27 y=%2743%27 font-size=%2732%27 font-family=%27Georgia,serif%27 fill=%27%23C9A24A%27 text-anchor=%27middle%27%3ELR%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<nav>
+  <div class="logo">LINK RENTAL</div>
+  <div class="nav-links">
+    <a href="#top">Home</a>
+    <a href="#properties">Properties</a>
+    <a href="#cars">Cars</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>A good home and a reliable car, found in Dar es Salaam</h1>
+    <p>Browse houses, apartments, short stays and cars for rent, then message us on WhatsApp to arrange a viewing.</p>
+    <div class="hero-buttons">
+      <a class="btn btn-gold magnetic" href="#properties"><span class="btn-roll"><span data-text="Find a property">Find a property</span></span></a>
+      <a class="btn btn-ghost magnetic" href="#cars"><span class="btn-roll"><span data-text="Rent a car">Rent a car</span></span></a>
+    </div>
+  </div>
+</header>
+
+<section class="finder" aria-label="Search listings">
+  <select id="category" aria-label="Type">
+    <option value="all">Houses and cars</option>
+    <option value="property">House or apartment</option>
+    <option value="car">Car</option>
+  </select>
+  <select id="location" aria-label="Location">
+    <option value="all">Any location</option>
+    <option value="Masaki">Masaki</option>
+    <option value="Mbezi Beach">Mbezi Beach</option>
+    <option value="Mikocheni">Mikocheni</option>
+    <option value="Sinza">Sinza</option>
+    <option value="Kimara">Kimara</option>
+  </select>
+  <select id="period" aria-label="Rental period">
+    <option value="all">Any period</option>
+    <option value="month">Per month</option>
+    <option value="night">Per night</option>
+    <option value="day">Per day</option>
+  </select>
+  <select id="budget" aria-label="Budget">
+    <option value="all">Any budget</option>
+    <option value="200000">Below TZS 200,000</option>
+    <option value="500000">Below TZS 500,000</option>
+    <option value="1000000">Below TZS 1,000,000</option>
+    <option value="2000000">Below TZS 2,000,000</option>
+  </select>
+  <select id="status" aria-label="Availability">
+    <option value="all">Available and booked</option>
+    <option value="available">Available only</option>
+  </select>
+  <button type="button" onclick="searchListings()">Search</button>
+  <button type="button" class="reset-btn" onclick="showAllListings()">Show all</button>
+</section>
+
+<main>
+  <section class="block listings" id="properties">
+    <h2 class="reveal">Houses and apartments</h2>
+    <div class="grid" id="propertyGrid"></div>
+  </section>
+
+  <section class="block listings" id="cars">
+    <h2 class="reveal">Cars for rent</h2>
+    <div class="grid" id="carGrid"></div>
+  </section>
+
+  <p class="block" id="noResults" hidden>No listings match your search. Try a different location or budget, or choose Show all.</p>
+</main>
+
+<section class="owners">
+  <div class="owners-inner">
+    <h2 class="reveal">Have a house or car to rent out?</h2>
+    <p class="reveal">List it with Link Rental and we will connect it with people looking for a rental.</p>
+    <div class="owner-grid">
+      <div class="reveal"><h3>More exposure</h3><p>Show your property to people already searching for rentals.</p></div>
+      <div class="reveal" style="--d:.12s"><h3>Easy communication</h3><p>Receive enquiries from interested customers on WhatsApp.</p></div>
+      <div class="reveal" style="--d:.24s"><h3>Simple partnership</h3><p>Work with us to promote your available rentals.</p></div>
+    </div>
+    <a class="btn btn-gold" href="list-property.html"><span class="btn-roll"><span data-text="List your property">List your property</span></span></a>
+  </div>
+</section>
+
+<section class="block" id="contact">
+  <h2 class="reveal">Contact us</h2>
+  <p class="reveal">Looking for a house or car and not sure where to start? Tell us what you need.</p>
+  <a class="whatsapp-btn reveal" data-wa="Hello, I'd like help finding a property or car." href="https://wa.me/255796048479?text=Hello%2C%20I%27d%20like%20help%20finding%20a%20property%20or%20car." target="_blank" rel="noopener">Chat on WhatsApp</a>
+  <p class="reveal">WhatsApp: <span data-phone>+255 796 048 479</span></p>
+  <p class="reveal" style="margin-bottom:0">Follow us:</p>
+  <div class="social reveal" data-social hidden></div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <span>&copy; <span data-year>2026</span> LINK RENTAL, Dar es Salaam</span>
+    <div class="social" data-social hidden></div>
+    <span>Website by Adrian Vitus Gen</span>
+  </div>
+</footer>
+
+<noscript><p style="padding:20px;text-align:center">Please turn on JavaScript to see the listings, or message us on WhatsApp.</p></noscript>
+</body>
+</html>

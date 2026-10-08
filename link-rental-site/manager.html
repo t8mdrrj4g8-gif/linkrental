@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Site manager - LINK RENTAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.mgr{max-width:1000px;margin:0 auto;padding:40px 6% 40px}
+.mgr h1{margin:0 0 8px}.mgr h2{font-size:1.5rem;margin:44px 0 12px}
+.note{margin:16px 0;padding:12px 16px;border-left:4px solid var(--gold);background:var(--paper);font-size:.92rem}
+.note.warn{border-color:#B3261E}
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tools input{max-width:320px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);background:var(--paper)}
+table{width:100%;min-width:640px;border-collapse:collapse}
+th{padding:10px;text-align:left;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--line)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+td small{display:block;color:var(--muted)}
+td:first-child,td .mini{white-space:nowrap}
+td select,td input{padding:8px}
+td input[type=number]{min-width:130px}
+tr.changed td{background:#FFF7E0}
+td .mini{padding:6px 12px;border:1px solid var(--line);background:var(--ivory);cursor:pointer;font:inherit}
+.drop{margin-top:14px;padding:34px;border:2px dashed var(--gold);background:var(--paper);text-align:center;cursor:pointer}
+.drop.over{background:#FFF7E0}
+.pics{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0}
+.pic{width:150px}.pic img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--line);background:var(--ink)}
+.pic p{margin:4px 0;font-size:.8rem;color:var(--brass);font-weight:600;min-height:1.2em}
+.pic div{display:flex;gap:4px}
+.pic button{flex:1;padding:4px;border:1px solid var(--line);background:var(--paper);cursor:pointer}
+.set-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:4px 20px}
+.set-grid label{display:block;margin-top:12px;font-weight:600}
+.set-grid label span{display:block;font-weight:400;color:var(--muted);font-size:.82rem}
+.set-grid input{margin-top:6px}
+.savebar{position:sticky;bottom:0;z-index:20;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 6%;background:var(--ink);color:var(--ivory);box-shadow:0 -6px 20px rgba(20,36,58,.3)}
+.savebar .btn{padding:11px 22px}
+#msg{margin:0;font-weight:600}
+.savebar #msg{color:var(--gold)}
+#changes li{margin:4px 0}
+</style>
+<script src="jszip.min.js" defer></script>
+<script src="script.js" defer></script>
+</head>
+<body>
+<nav><div class="logo">LINK RENTAL manager</div><div class="nav-links"><a href="index.html">Back to site</a></div></nav>
+<main class="mgr">
+<h1>Manage your site</h1>
+<p>Change prices, photos, availability, your contact details and your Facebook, Instagram and TikTok links. When you are done, press <strong>Download update</strong> and upload the files from it to your website. Nothing leaves your computer until you upload it.</p>
+<div id="notes"></div>
+
+<h2>1. Prices and availability</h2>
+<div class="tools"><input id="q" type="search" placeholder="Search by name, place or code" aria-label="Search listings"></div>
+<div class="tablewrap"><table id="rows"><thead><tr><th>Code</th><th>Listing</th><th>Price (TZS)</th><th>Status</th><th>Photos</th></tr></thead><tbody></tbody></table></div>
+<p class="book-note">Rows with a yellow background have changes that are not on your website yet. Prices are per month, night or day as shown under each name.</p>
+
+<h2 id="photoHead">2. Photos</h2>
+<select id="mListing" aria-label="Listing"></select>
+<div class="drop" id="drop" tabindex="0" role="button">Drop photos here or click to choose<input type="file" id="files" accept="image/*" multiple hidden></div>
+<div class="pics" id="pics"></div>
+<p class="book-note">The first photo is the cover on the listing card. Use the arrows to reorder, the star to make a photo the cover, and &times; to remove. Photos are shrunk to a web-friendly size automatically. If you remove all photos, the listing goes back to the sample photo.</p>
+
+<h2>3. Contact and social media</h2>
+<div class="set-grid">
+  <label>WhatsApp number<span>With country code, e.g. 255796048479</span><input id="sPhone" inputmode="tel"></label>
+  <label>Your name for messages<span>Customers' messages start "Hello &lt;name&gt;"</span><input id="sName"></label>
+  <label>M-Pesa number<span>Leave empty to send payment details on WhatsApp instead</span><input id="sMpesa" inputmode="tel"></label>
+  <label>M-Pesa name<span>Name customers see when paying</span><input id="sMpesaName"></label>
+  <label>Facebook page link<span>https://www.facebook.com/...</span><input id="sFb" type="url" placeholder="https://"></label>
+  <label>Instagram link<span>https://www.instagram.com/...</span><input id="sIg" type="url" placeholder="https://"></label>
+  <label>TikTok link<span>https://www.tiktok.com/@...</span><input id="sTt" type="url" placeholder="https://"></label>
+  <label>Website address<span>Used in Share links, e.g. https://linkrental.co.tz</span><input id="sSite" type="url" placeholder="https://"></label>
+</div>
+
+<h2>4. Update your website</h2>
+<p>After you press Download update, unzip the file. Upload the <strong>images</strong> folder (if there is one) and <strong>photos.json</strong>, <strong>status.json</strong>, <strong>prices.json</strong> and <strong>settings.json</strong> to the same place as <strong>index.html</strong>, replacing the old ones. The site then shows your changes with no code editing.</p>
+<p><strong>What will change:</strong></p>
+<ul id="changes"></ul>
+<p class="book-note">Opening this page from your website loads your current prices, photos and statuses automatically. If you opened it from your computer, load your current files here first so nothing is lost: <input type="file" id="load" accept=".json" multiple></p>
+</main>
+
+<div class="savebar"><span id="count">No changes yet</span><span id="msg" role="status"></span><button class="btn btn-gold" id="dl" type="button">Download update</button></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadData();
+  const $ = id => document.getElementById(id);
+  const state = { status: {}, prices: {}, photos: {}, settings: Object.assign({}, SETTINGS) };
+  let base = null, dirty = false;
+  const own = p => typeof p === "string" && /^(images\/|https?:\/\/)/i.test(p);
+  const msg = $("msg"), sel = $("mListing"), pics = $("pics"), q = $("q");
+  const stamp = () => Date.now().toString(36);
+
+  /* ----- start from what the site shows now ----- */
+  LISTINGS.forEach((l, i) => {
+    const c = codeOf(i);
+    state.status[c] = l[7];
+    state.prices[c] = l[3];
+    state.photos[c] = (l[8] || []).filter(own).map(p => ({ src: p, path: p }));
+  });
+  const snap = () => JSON.stringify({
+    s: state.status, p: state.prices, st: state.settings,
+    ph: Object.keys(state.photos).reduce((o, c) => { o[c] = state.photos[c].map(p => p.path || "new"); return o; }, {})
+  });
+  base = { status: Object.assign({}, state.status), prices: Object.assign({}, state.prices), settings: Object.assign({}, state.settings),
+           photos: Object.keys(state.photos).reduce((o, c) => { o[c] = state.photos[c].map(p => p.path); return o; }, {}) };
+
+  const missing = ["status", "prices", "photos", "settings"].filter(k => !LIVE[k]).map(k => k + ".json");
+  if (missing.length) $("notes").innerHTML = '<div class="note warn"><strong>Not found on the website:</strong> ' + missing.join(", ") + '. That is normal the first time you use the manager. If your site already has these files and you opened this page from your computer, load them with the button at the bottom of this page before downloading, so nothing is overwritten.</div>';
+  if (IN_APP) $("notes").innerHTML += '<div class="note warn">You are inside a social media app. Open this page in Chrome or Safari so the download and photo upload work properly.</div>';
+
+  const nameOf = c => { const l = LISTINGS[+c.slice(3) - 101]; return l ? l[1] : c; };
+  const fmt = n => Number(n).toLocaleString("en-US");
+
+  /* ----- changes list ----- */
+  const photoSame = c => { const a = (base.photos[c] || []).join("|"), b = state.photos[c].map(p => p.path || "new").join("|"); return a === b; };
+  function changes() {
+    const out = [];
+    LISTINGS.forEach((l, i) => {
+      const c = codeOf(i);
+      if (state.prices[c] !== base.prices[c]) out.push(c + " " + nameOf(c) + ": price " + fmt(base.prices[c]) + " to " + fmt(state.prices[c]));
+      if (state.status[c] !== base.status[c]) out.push(c + " " + nameOf(c) + ": now " + state.status[c]);
+      if (!photoSame(c)) out.push(c + " " + nameOf(c) + ": photos changed (" + state.photos[c].length + " now)");
+    });
+    if (JSON.stringify(state.settings) !== JSON.stringify(base.settings)) out.push("Contact and social media details");
+    return out;
+  }
+  function refresh() {
+    const ch = changes();
+    $("count").textContent = ch.length ? ch.length + (ch.length === 1 ? " change" : " changes") + " to download" : "No changes yet";
+    $("changes").innerHTML = ch.length ? ch.map(t => "<li>" + esc(t) + "</li>").join("") : "<li>Nothing yet. Change a price, photo or status above.</li>";
+    document.querySelectorAll("#rows tbody tr").forEach(tr => {
+      const c = tr.dataset.c;
+      tr.classList.toggle("changed", state.prices[c] !== base.prices[c] || state.status[c] !== base.status[c] || !photoSame(c));
+    });
+    $("rows").querySelectorAll("[data-ph]").forEach(b => { b.textContent = state.photos[b.dataset.ph].length + " (edit)"; });
+  }
+  const touch = () => { dirty = true; msg.textContent = ""; refresh(); };
+
+  /* ----- table ----- */
+  function drawRows() {
+    const term = q.value.trim().toLowerCase();
+    $("rows").querySelector("tbody").innerHTML = LISTINGS.map((l, i) => ({ l, i, c: codeOf(i) }))
+      .filter(r => !term || (r.c + " " + r.l[1] + " " + r.l[2] + " " + r.l[0]).toLowerCase().indexOf(term) >= 0)
+      .map(r => '<tr data-c="' + r.c + '"><td>' + r.c + '</td><td>' + esc(r.l[1]) + '<small>' + esc(r.l[2]) + ' &middot; per ' + r.l[4] + '</small></td>' +
+        '<td><input type="number" min="0" step="1000" inputmode="numeric" data-p="' + r.c + '" value="' + state.prices[r.c] + '" aria-label="Price for ' + esc(r.l[1]) + '"></td>' +
+        '<td><select data-s="' + r.c + '" aria-label="Status for ' + esc(r.l[1]) + '"><option value="available"' + (state.status[r.c] === "available" ? " selected" : "") + '>Available</option><option value="booked"' + (state.status[r.c] === "booked" ? " selected" : "") + '>Booked</option></select></td>' +
+        '<td><button type="button" class="mini" data-ph="' + r.c + '"></button></td></tr>').join("");
+    refresh();
+  }
+  q.addEventListener("input", drawRows);
+  const rows = $("rows");
+  rows.addEventListener("input", e => {
+    const c = e.target.dataset.p;
+    if (!c) return;
+    const v = Math.round(Number(e.target.value));
+    e.target.style.outline = v > 0 ? "" : "2px solid #B3261E";
+    if (v > 0) { state.prices[c] = v; touch(); }
+  });
+  rows.addEventListener("change", e => {
+    if (e.target.dataset.s) { state.status[e.target.dataset.s] = e.target.value; touch(); }
+    if (e.target.dataset.p) { e.target.value = state.prices[e.target.dataset.p]; }   // empty or invalid price goes back to the last good one
+  });
+  rows.addEventListener("click", e => {
+    const b = e.target.closest("[data-ph]");
+    if (!b) return;
+    sel.value = String(+b.dataset.ph.slice(3) - 101); drawPics();
+    $("photoHead").scrollIntoView({ behavior: "smooth" });
+  });
+
+  /* ----- photos ----- */
+  sel.innerHTML = LISTINGS.map((l, i) => '<option value="' + i + '">' + codeOf(i) + "  " + esc(l[1]) + " (" + esc(l[2]) + ")</option>").join("");
+  const cur = () => codeOf(+sel.value);
+  function drawPics() {
+    const list = state.photos[cur()] || [];
+    pics.innerHTML = list.map((p, k) => '<div class="pic"><img src="' + esc(p.src) + '" alt="" onerror="this.style.opacity=.3"><p>' + (k ? "" : "Cover photo") + '</p><div>' +
+      '<button type="button" data-a="l" data-k="' + k + '" aria-label="Move earlier">&#8592;</button><button type="button" data-a="r" data-k="' + k + '" aria-label="Move later">&#8594;</button>' +
+      '<button type="button" data-a="c" data-k="' + k + '" aria-label="Make cover photo">&#9733;</button><button type="button" data-a="x" data-k="' + k + '" aria-label="Remove">&times;</button></div></div>').join("") || "<p>No photos of your own yet for this listing. The site shows sample photos until you add some.</p>";
+  }
+  pics.addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const list = state.photos[cur()], k = +b.dataset.k, a = b.dataset.a;
+    if (a === "x") list.splice(k, 1);
+    else if (a === "c") list.unshift(list.splice(k, 1)[0]);
+    else { const j = k + (a === "l" ? -1 : 1); if (j >= 0 && j < list.length) { const t = list[k]; list[k] = list[j]; list[j] = t; } }
+    drawPics(); touch();
+  });
+  sel.addEventListener("change", drawPics);
+
+  async function decode(file) {
+    if (window.createImageBitmap) { try { return await createImageBitmap(file); } catch (e) { /* try the older way below */ } }
+    return new Promise((ok, no) => {
+      const u = URL.createObjectURL(file), im = new Image();
+      im.onload = () => { URL.revokeObjectURL(u); ok(im); };
+      im.onerror = () => { URL.revokeObjectURL(u); no(new Error("decode")); };
+      im.src = u;
+    });
+  }
+  async function shrink(file) {
+    const bmp = await decode(file), w = bmp.width || bmp.naturalWidth, h = bmp.height || bmp.naturalHeight;
+    const k = Math.min(1, 1600 / Math.max(w, h));
+    const c = document.createElement("canvas");
+    c.width = Math.round(w * k); c.height = Math.round(h * k);
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);   // pngs with transparency
+    ctx.drawImage(bmp, 0, 0, c.width, c.height);
+    return new Promise((ok, no) => c.toBlob(b => b ? ok(b) : no(new Error("encode")), "image/jpeg", 0.82));
+  }
+  async function addFiles(files) {
+    const c = cur(), skipped = [];
+    msg.textContent = "Preparing photos...";
+    for (const f of files) {
+      if (f.type.indexOf("image/") !== 0) { skipped.push(f.name); continue; }
+      try { const blob = await shrink(f); state.photos[c].push({ src: URL.createObjectURL(blob), blob: blob }); }
+      catch (e) { skipped.push(f.name); }
+    }
+    msg.textContent = skipped.length ? "Could not use: " + skipped.join(", ") + " (try JPG or PNG)" : "";
+    drawPics(); dirty = true; refresh();
+  }
+  const drop = $("drop"), input = $("files");
+  drop.addEventListener("click", () => input.click());
+  drop.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => { addFiles([].slice.call(input.files)); input.value = ""; });
+  drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("over"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+  drop.addEventListener("drop", e => { e.preventDefault(); drop.classList.remove("over"); addFiles([].slice.call(e.dataTransfer.files)); });
+
+  /* ----- settings ----- */
+  const fields = { phone: "sPhone", contactName: "sName", mpesaNumber: "sMpesa", mpesaName: "sMpesaName", facebook: "sFb", instagram: "sIg", tiktok: "sTt", siteUrl: "sSite" };
+  function fillSettings() { for (const k in fields) $(fields[k]).value = state.settings[k] || ""; }
+  for (const k in fields) $(fields[k]).addEventListener("input", e => { state.settings[k] = e.target.value.trim(); touch(); });
+  fillSettings();
+
+  /* ----- load current files from the computer ----- */
+  $("load").addEventListener("change", async e => {
+    const done = [];
+    for (const f of e.target.files) {
+      try {
+        const m = JSON.parse(await f.text()), n = f.name.toLowerCase();
+        if (n.indexOf("status") >= 0) { for (const c in state.status) if (m[c] === "available" || m[c] === "booked") { state.status[c] = m[c]; base.status[c] = m[c]; } done.push("status"); }
+        else if (n.indexOf("prices") >= 0) { for (const c in state.prices) { const v = Math.round(Number(m[c])); if (v > 0) { state.prices[c] = v; base.prices[c] = v; } } done.push("prices"); }
+        else if (n.indexOf("photos") >= 0) { for (const c in state.photos) if (Array.isArray(m[c])) { state.photos[c] = m[c].filter(own).map(p => ({ src: p, path: p })); base.photos[c] = state.photos[c].map(p => p.path); } done.push("photos"); }
+        else if (n.indexOf("settings") >= 0) { for (const k in fields) if (typeof m[k] === "string") { state.settings[k] = m[k]; } base.settings = Object.assign({}, state.settings); done.push("settings"); }
+      } catch (err) { msg.textContent = "Could not read " + f.name; e.target.value = ""; return; }
+    }
+    e.target.value = "";
+    msg.textContent = done.length ? "Loaded " + done.join(", ") + "." : "No status, prices, photos or settings file found.";
+    fillSettings(); drawRows(); drawPics();
+  });
+
+  /* ----- download ----- */
+  $("dl").addEventListener("click", async () => {
+    if (typeof JSZip === "undefined") { msg.textContent = "The zip tool did not load. Reload this page and try again."; return; }
+    const s = state.settings, phone = normPhone(s.phone);
+    if (phone.length < 9) { msg.textContent = "Check the WhatsApp number in section 3."; return; }
+    const bad = ["facebook", "instagram", "tiktok", "siteUrl"].filter(k => s[k] && !cleanUrl(s[k]));
+    if (bad.length) { msg.textContent = "Links must start with https:// (check section 3)."; return; }
+    const zip = new JSZip(), out = {}, st = stamp();
+    for (const c in state.photos) {
+      if (!state.photos[c].length) continue;
+      out[c] = state.photos[c].map((p, k) => {
+        if (p.path) return p.path;
+        const name = "images/" + c.toLowerCase() + "-" + st + k + ".jpg";
+        zip.file(name, p.blob); return name;
+      });
+    }
+    zip.file("photos.json", JSON.stringify(out, null, 2));
+    zip.file("status.json", JSON.stringify(state.status, null, 2));
+    zip.file("prices.json", JSON.stringify(state.prices, null, 2));
+    zip.file("settings.json", JSON.stringify({
+      phone: phone, contactName: s.contactName || DEFAULT_SETTINGS.contactName, mpesaNumber: s.mpesaNumber || "", mpesaName: s.mpesaName || "",
+      facebook: cleanUrl(s.facebook), instagram: cleanUrl(s.instagram), tiktok: cleanUrl(s.tiktok), siteUrl: cleanUrl(s.siteUrl)
+    }, null, 2));
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(await zip.generateAsync({ type: "blob" }));
+    a.download = "site-update.zip";
+    document.body.appendChild(a); a.click(); a.remove();
+    dirty = false;
+    msg.textContent = "Downloaded site-update.zip. Now upload its files to your website.";
+  });
+
+  addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+  drawRows(); drawPics();
+});
+</script>
+</body>
+</html>
